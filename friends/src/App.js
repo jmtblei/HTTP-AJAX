@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import FriendForm from './Components/FriendForm';
 import FriendList from './Components/FriendList';
+import axios from 'axios';
 
 class App extends Component {
   constructor() {
@@ -14,27 +15,55 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    axios
+      .get("http://localhost:5000/friends/")
+      .then(res => {
+        this.setState({ friends: res.data });
+      })
+      .catch(err => console.log(err));
+  }
+
   handleChange = event => {
     this.setState({
             [event.target.name]: event.target.value
     })
   };
 
-addFriend = event => {
+  addFriend = event => {
     event.preventDefault();
-    const newFriend = {
+    const thisfriend = {
       age: this.state.age,
       name: this.state.name,
       email: this.state.email
     }
-    this.setState({
-      friends: [...this.state.friends, newFriend],
-      name:'',
-      age: '',
-      email: ''
-    })
+    axios
+        .post("http://localhost:5000/friends/", thisfriend)
+        .then(res => {
+          this.setState({
+            friends: res.data,
+            age: '',
+            name: '',
+            email: ''
+          });
+        })
+        .catch(err => console.log(err));
+      this.setState({
+        friends: [...this.state.friends, thisfriend]
+      });
   };
 
+  deleteFriend = id => {
+    axios
+    .delete(`http://localhost:5000/friends/${id}`)
+    .then(res => {
+      this.setState({
+        friends: res.data
+      });
+    })
+    .catch(err => console.log(err))
+  };
+    
   render() {
     return (
       <div className="App">
@@ -48,6 +77,7 @@ addFriend = event => {
         />
         <FriendList 
           friends={this.state.friends}
+          deleteFriend={this.deleteFriend}
         />
       </div>
     );
