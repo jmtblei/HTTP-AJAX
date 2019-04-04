@@ -48,9 +48,6 @@ class App extends Component {
           });
         })
         .catch(err => console.log(err));
-      this.setState({
-        friends: [...this.state.friends, thisfriend]
-      });
   };
 
   deleteFriend = id => {
