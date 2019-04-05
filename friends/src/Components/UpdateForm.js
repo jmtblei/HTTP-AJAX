@@ -1,6 +1,6 @@
 import React from 'react';
 
-class FriendForm extends React.Component {
+class UpdateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -12,7 +12,7 @@ class FriendForm extends React.Component {
         };
     }
 
-    handleChange = event => {
+    handlerChange = event => {
         this.setState({
             [event.target.name]: event.target.value
         })
@@ -29,34 +29,35 @@ class FriendForm extends React.Component {
     render() {
         return(
             <div>
-                <h2>Let's be friends FOREVER!</h2>
+                <h2>Update Friend</h2>
                 <form onSubmit={(event) =>{
                     event.preventDefault();
-                    this.props.addFriend(this.state);
+                    this.props.updateFriend(this.state, this.props.id);
                     this.clearForm();
-                    }}>
+                    this.props.history.push("/");
+                }}>
                    <input
                    type="text"
                    name="name"
-                   placeholder="Enter your name"
-                   onChange={this.handleChange}
+                   placeholder="Update name"
+                   onChange={this.handlerChange}
                    value={this.state.name}
                    />
                    <input
                    type="number"
                    name="age"
-                   placeholder="Enter your age"
-                   onChange={this.handleChange}
+                   placeholder="update age"
+                   onChange={this.handlerChange}
                    value={this.state.age}
                    />
                    <input
                    type="email"
                    name="email"
-                   placeholder="Enter your email"
-                   onChange={this.handleChange}
+                   placeholder="update email"
+                   onChange={this.handlerChange}
                    value={this.state.email}
                    /> 
-                   <button>BFF's FOREVER</button>
+                   <button>Update</button>
                 </form>
             </div>
         )
@@ -64,4 +65,4 @@ class FriendForm extends React.Component {
 }
 
 
-export default FriendForm;
+export default UpdateForm;
